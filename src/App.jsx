@@ -5,6 +5,7 @@ import "aos/dist/aos.css";
 import Popup from "./components/Popup/Popup";
 import BannerSlider from "./components/BannerSlider/BannerSlider";
 import Products from "./components/Products/Products";
+import BestProducts from "./components/BestProducts/BestProducts";
 
 const App = () => {
   const [orderPopup, setOrderPopup] = React.useState(false);
@@ -26,8 +27,8 @@ const App = () => {
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
       <Navbar handleOrderPopup={handleOrderPopup} />
       <BannerSlider handleOrderPopup={handleOrderPopup} />
-
       <Products />
+      <BestProducts handleOrderPopup={handleOrderPopup} />
       <Popup orderPopup={orderPopup} setOrderPopup={setOrderPopup} />
     </div>
   );
