@@ -16,17 +16,17 @@ const Menu = [
     link: "/#services",
   },
   {
-    id: 3,
+    id: 4,
     name: "Kids Wear",
     link: "/#",
   },
   {
-    id: 3,
+    id: 5,
     name: "Mens Wear",
     link: "/#",
   },
   {
-    id: 3,
+    id: 6,
     name: "Electronics",
     link: "/#",
   },
