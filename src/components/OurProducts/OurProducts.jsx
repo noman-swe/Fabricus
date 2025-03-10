@@ -1,11 +1,12 @@
 import Img1 from "../../assets/shirt/shirt.png";
 import Img2 from "../../assets/shirt/shirt2.png";
 import Img3 from "../../assets/shirt/shirt3.png";
-import PropTypes from "prop-types";
 import { ourProducts } from "../../lib/allProducts";
 import { useEffect, useState } from "react";
 import Rating from "../Rating/Rating";
 import { truncate } from "../../lib/turncate";
+import { addToCart } from "../../lib/addToCart";
+import PropTypes from "prop-types";
 
 const staticProducts = [
   {
@@ -31,7 +32,7 @@ const staticProducts = [
   },
 ];
 
-const OurProducts = ({ handleOrderPopup }) => {
+const OurProducts = ({ setCartedProduct }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -97,7 +98,9 @@ const OurProducts = ({ handleOrderPopup }) => {
 
                 <button
                   className="bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-primay/10 group-hover:text-white"
-                  onClick={handleOrderPopup}
+                  onClick={() => {
+                    addToCart(data), setCartedProduct(data);
+                  }}
                 >
                   Order Now
                 </button>
@@ -109,8 +112,9 @@ const OurProducts = ({ handleOrderPopup }) => {
     </div>
   );
 };
+
 OurProducts.propTypes = {
-  handleOrderPopup: PropTypes.func.isRequired,
+  setCartedProduct: PropTypes.func,
 };
 
 export default OurProducts;

@@ -11,13 +11,23 @@ import Subscribe from "./components/Subscribe/Subscribe";
 import Testimonials from "./components/Testimonials/Testimonials";
 import Footer from "./components/Footer/Footer";
 import OurProducts from "./components/OurProducts/OurProducts";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [orderPopup, setOrderPopup] = React.useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [cartedProduct, setCartedProduct] = React.useState([]);
+  // console.log("🚀 ~ App ~ cartedProduct:", cartedProduct);
 
   const handleOrderPopup = () => {
     setOrderPopup(!orderPopup);
   };
+
+  const findTotalCartedItem = () => {
+    let cart = JSON.parse(localStorage.getItem("fabricus")) || [];
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
   React.useEffect(() => {
     AOS.init({
       offset: 100,
@@ -30,17 +40,21 @@ const App = () => {
 
   return (
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
-      <Navbar handleOrderPopup={handleOrderPopup} />
+      <Navbar
+        handleOrderPopup={handleOrderPopup}
+        cartCount={findTotalCartedItem()}
+      />
       <BannerSlider handleOrderPopup={handleOrderPopup} />
       <Products />
       <BestProducts handleOrderPopup={handleOrderPopup} />
-      <OurProducts handleOrderPopup={handleOrderPopup} />
+      <OurProducts setCartedProduct={setCartedProduct} />
       <SaleBanner />
       <Subscribe />
       <Products />
       <Testimonials />
       <Footer />
       <Popup orderPopup={orderPopup} setOrderPopup={setOrderPopup} />
+      <ToastContainer />
     </div>
   );
 };
