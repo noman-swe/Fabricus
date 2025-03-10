@@ -6,6 +6,8 @@ import Popup from "./components/Popup/Popup";
 import BannerSlider from "./components/BannerSlider/BannerSlider";
 import Products from "./components/Products/Products";
 import BestProducts from "./components/BestProducts/BestProducts";
+import SaleBanner from "./components/SaleBanner/SaleBanner";
+import Subscribe from "./components/Subscribe/Subscribe";
 
 const App = () => {
   const [orderPopup, setOrderPopup] = React.useState(false);
@@ -29,6 +31,9 @@ const App = () => {
       <BannerSlider handleOrderPopup={handleOrderPopup} />
       <Products />
       <BestProducts handleOrderPopup={handleOrderPopup} />
+      <SaleBanner />
+      <Subscribe />
+      <Products />
       <Popup orderPopup={orderPopup} setOrderPopup={setOrderPopup} />
     </div>
   );
