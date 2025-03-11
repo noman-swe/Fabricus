@@ -1,45 +1,17 @@
-import Img1 from "../../assets/shirt/shirt.png";
-import Img2 from "../../assets/shirt/shirt2.png";
-import Img3 from "../../assets/shirt/shirt3.png";
-import { ourProducts } from "../../lib/allProducts";
+import { getOurProducts } from "../../lib/allProducts";
 import { useEffect, useState } from "react";
 import Rating from "../Rating/Rating";
 import { truncate } from "../../lib/turncate";
 import { addToCart } from "../../lib/addToCart";
-import PropTypes from "prop-types";
 
-const staticProducts = [
-  {
-    id: 1,
-    img: Img1,
-    title: "Casual Wear",
-    description:
-      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    id: 2,
-    img: Img2,
-    title: "Printed shirt",
-    description:
-      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    id: 3,
-    img: Img3,
-    title: "Women shirt",
-    description:
-      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-];
-
-const OurProducts = ({ setCartedProduct }) => {
+const OurProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const fetchedProducts = await ourProducts();
-      setProducts(fetchedProducts.length ? fetchedProducts : staticProducts);
+      const fetchedProducts = await getOurProducts();
+      setProducts(fetchedProducts);
       setLoading(false);
     };
 
@@ -50,7 +22,7 @@ const OurProducts = ({ setCartedProduct }) => {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
   return (
-    <div>
+    <div className="pb-5">
       <div className="container">
         {/* Header section */}
         <div className="text-left my-24">
@@ -99,10 +71,10 @@ const OurProducts = ({ setCartedProduct }) => {
                 <button
                   className="bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-primay/10 group-hover:text-white"
                   onClick={() => {
-                    addToCart(data), setCartedProduct(data);
+                    addToCart(data);
                   }}
                 >
-                  Order Now
+                  Add To Cart
                 </button>
               </div>
             </div>
@@ -111,10 +83,6 @@ const OurProducts = ({ setCartedProduct }) => {
       </div>
     </div>
   );
-};
-
-OurProducts.propTypes = {
-  setCartedProduct: PropTypes.func,
 };
 
 export default OurProducts;
