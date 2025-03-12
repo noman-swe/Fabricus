@@ -7,16 +7,18 @@ import Carts from "./components/Carts/Carts";
 import NewItems from "./components/NewItems/NewItems";
 import useNewProducts from "./hooks/useNewProducts";
 import Navbar from "./components/Navbar/Navbar";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [products] = useNewProducts();
   const [selectedCategory, setSelectedCategory] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [cartCount, setCartCount] = useState(0);
 
   const findTotalCartedItem = () => {
     let cart = JSON.parse(localStorage.getItem("fabricus")) || [];
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
-
   React.useEffect(() => {
     AOS.init({
       offset: 100,
@@ -25,13 +27,26 @@ const App = () => {
       delay: 100,
     });
     AOS.refresh();
+
+    setCartCount(findTotalCartedItem());
+  }, []);
+
+  React.useEffect(() => {
+    const handleStorageChange = () => {
+      setCartCount(findTotalCartedItem());
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   return (
     <div>
       <Navbar
         cartCount={findTotalCartedItem()}
-        isLanding={true}
         setSelectedCategory={setSelectedCategory}
       />
       <Routes>
@@ -78,6 +93,8 @@ const App = () => {
           }
         />
       </Routes>
+
+      <ToastContainer />
     </div>
   );
 };

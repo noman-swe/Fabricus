@@ -1,26 +1,11 @@
-import { getOurProducts } from "../../lib/allProducts";
-import { useEffect, useState } from "react";
 import Rating from "../Rating/Rating";
 import { truncate } from "../../lib/turncate";
 import { addToCart } from "../../lib/addToCart";
+import useOurProducts from "../../hooks/uesOurProducts";
 
 const OurProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products] = useOurProducts();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const fetchedProducts = await getOurProducts();
-      setProducts(fetchedProducts);
-      setLoading(false);
-    };
-
-    fetchProducts();
-  }, []);
-
-  if (loading) {
-    return <div className="text-center text-gray-500">Loading...</div>;
-  }
   return (
     <div className="pb-5">
       <div className="container">
@@ -36,7 +21,7 @@ const OurProducts = () => {
         </div>
         {/* Body section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 md:gap-5 place-items-center">
-          {products.slice(0, 6).map((data) => (
+          {products?.slice(0, 6).map((data) => (
             <div
               key={data?.id}
               data-aos="zoom-in"

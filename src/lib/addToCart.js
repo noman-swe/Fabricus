@@ -5,13 +5,13 @@ export const addToCart = (product) => {
     let cart = JSON.parse(localStorage.getItem("fabricus")) || [];
 
     // Check if the product already exists in the cart
-    const existingItem = cart.find((item) => item.id === product.id);
+    const existingItem = cart.find((item) => item?.id === product?.id);
     toast("Item added successfully!");
     if (existingItem) {
       existingItem.quantity += 1;
-      existingItem.price = product.price * existingItem.quantity;
+      existingItem.price = product?.price * existingItem?.quantity;
     } else {
-      cart.push({ id: product.id, quantity: 1, price: product.price });
+      cart.push({ id: product?.id, quantity: 1, price: product?.price });
     }
 
     localStorage.setItem("fabricus", JSON.stringify(cart));

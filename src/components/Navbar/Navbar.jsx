@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
 import Logo from "../../assets/logo.png";
 import { IoMdSearch } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
@@ -9,55 +9,33 @@ import PropTypes from "prop-types";
 import useNewProducts from "../../hooks/useNewProducts";
 
 const Menu = [
-  {
-    id: 1,
-    name: "Home",
-    link: "/#",
-  },
-  {
-    id: 2,
-    name: "Top Rated",
-    link: "/#topRated",
-  },
-  {
-    id: 4,
-    name: "Kids Wear",
-    link: "/#",
-  },
-  {
-    id: 5,
-    name: "Mens Wear",
-    link: "/#",
-  },
-  {
-    id: 6,
-    name: "Electronics",
-    link: "/#",
-  },
+  { id: 1, name: "Home", link: "/#" },
+  { id: 2, name: "Top Rated", link: "/#topRated" },
+  { id: 3, name: "Electronics", link: "/#" },
 ];
 
 const clothesCat = [
-  {
-    id: 1,
-    name: "Kids Wear",
-    link: "/#kids",
-  },
-  {
-    id: 2,
-    name: "Mens Wear",
-    link: "/#mens",
-  },
-  {
-    id: 3,
-    name: "Top Rated",
-    link: "/#top",
-  },
+  { id: 1, name: "Kids Wear", link: "/#kids" },
+  { id: 2, name: "Mens Wear", link: "/#mens" },
+  { id: 3, name: "Top Rated", link: "/#top" },
 ];
 
-// eslint-disable-next-line react/prop-types, no-unused-vars
-const Navbar = ({ isLanding = false, cartCount, setSelectedCategory }) => {
+const Navbar = ({ setSelectedCategory }) => {
+  // eslint-disable-next-line no-unused-vars
   const [products, categories] = useNewProducts();
   const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
+
+  // Update cart count when the component mounts or when cart items change
+  const updateCartCount = () => {
+    let cart = JSON.parse(localStorage.getItem("fabricus")) || [];
+    const totalCount = cart.reduce((total, item) => total + item.quantity, 0);
+    setCartCount(totalCount);
+  };
+
+  useEffect(() => {
+    updateCartCount();
+  }, []);
 
   const handleSelectedCategory = (event, category) => {
     event.preventDefault();
@@ -70,12 +48,10 @@ const Navbar = ({ isLanding = false, cartCount, setSelectedCategory }) => {
       {/* upper Navbar */}
       <div className="bg-primary/40 py-2">
         <div className="container flex justify-between items-center">
-          <div>
-            <a href="#" className="font-bold text-2xl sm:text-3xl flex gap-2">
-              <img src={Logo} alt="Logo" className="w-10" />
-              Fabricus
-            </a>
-          </div>
+          <a href="/" className="font-bold text-2xl sm:text-3xl flex gap-2">
+            <img src={Logo} alt="Logo" className="w-10" />
+            Fabricus
+          </a>
 
           {/* search bar */}
           <div className="flex justify-between items-center gap-4">
@@ -89,20 +65,18 @@ const Navbar = ({ isLanding = false, cartCount, setSelectedCategory }) => {
             </div>
 
             {/* order button */}
-            {isLanding && (
-              <button className="bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full flex items-center gap-3 group">
-                <Link to={"/carts"}>
-                  <div className="relative">
-                    <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
-                    {cartCount > 0 && (
-                      <span className="absolute -top-3 -right-[30px] bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                        {cartCount}
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              </button>
-            )}
+            <button className="bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3 group">
+              <Link to={"/carts"}>
+                <div className="relative">
+                  <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-3 -right-[30px] bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            </button>
 
             {/* Darkmode Switch */}
             <div>
@@ -178,10 +152,10 @@ const Navbar = ({ isLanding = false, cartCount, setSelectedCategory }) => {
     </div>
   );
 };
+
 Navbar.propTypes = {
   cartCount: PropTypes.number,
   setSelectedCategory: PropTypes.func,
-  // categories: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default Navbar;
