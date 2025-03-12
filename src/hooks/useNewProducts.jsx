@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCosmetics } from "../lib/allProducts";
+import { getNewProducts } from "../lib/allProducts";
 
 const useNewProducts = () => {
   const [products, setProducts] = useState([]);
@@ -9,7 +9,7 @@ const useNewProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const fetchedProducts = await getCosmetics();
+        const fetchedProducts = await getNewProducts();
         if (fetchedProducts?.products) {
           setProducts(fetchedProducts.products);
           setCategories([

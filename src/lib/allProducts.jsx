@@ -11,7 +11,7 @@ export const getOurProducts = async () => {
   }
 };
 
-export const getCosmetics = async () => {
+export const getNewProducts = async () => {
   try {
     const response = await fetch("https://dummyjson.com/products");
     if (!response.ok) {

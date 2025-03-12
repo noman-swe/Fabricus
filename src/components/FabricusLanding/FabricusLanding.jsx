@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../Navbar/Navbar";
 import BannerSlider from "../BannerSlider/BannerSlider";
 import BestProducts from "../BestProducts/BestProducts";
 import OurProducts from "../OurProducts/OurProducts";
@@ -23,16 +22,8 @@ const FabricusLanding = () => {
     setOrderPopup(!orderPopup);
   };
 
-  const findTotalCartedItem = () => {
-    let cart = JSON.parse(localStorage.getItem("fabricus")) || [];
-    return cart.reduce((total, item) => total + item.quantity, 0);
-  };
-
-  //   const [products] = useNewProducts();
-
   return (
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
-      <Navbar cartCount={findTotalCartedItem()} isLanding={true} />
       <BannerSlider handleOrderPopup={handleOrderPopup} />
       <Products />
       <BestProducts handleOrderPopup={handleOrderPopup} />
@@ -40,7 +31,7 @@ const FabricusLanding = () => {
       <NewItems
         isLanding={true}
         setCategories={setCategories}
-        products={products.slice(0, 3)}
+        products={products}
       />
       <SaleBanner />
       <Subscribe />

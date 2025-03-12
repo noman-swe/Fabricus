@@ -3,18 +3,35 @@ import PropTypes from "prop-types";
 import Rating from "../Rating/Rating";
 import { truncate } from "../../lib/turncate";
 import { addToCart } from "../../lib/addToCart";
-import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import Navbar from "../Navbar/Navbar";
+import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const NewItems = ({ isLanding = false, products, loading }) => {
+const NewItems = ({
+  isLanding = false,
+  products,
+  loading,
+  selectedCategory,
+}) => {
+  const [productsbyCat, setProductsbyCat] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    if (selectedCategory && products.length > 0) {
+      setProductsbyCat(
+        products.filter((product) => product?.category === selectedCategory)
+      );
+    }
+  }, [products, selectedCategory, location]);
+
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
+
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container">
         {/* Header section */}
         {!isLanding && (
@@ -29,16 +46,19 @@ const NewItems = ({ isLanding = false, products, loading }) => {
                 asperiores modi Sit asperiores modi
               </p>
             </div>
-            <Link to={"/"}>
-              <button className="flex items-center gap-0.5 bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-primay/10 group-hover:text-white">
-                <IoIosArrowRoundBack size={24} /> Back
-              </button>
-            </Link>
+            {/* <Link to={"/"}> */}
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-0.5 bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-primay/10 group-hover:text-white"
+            >
+              <IoIosArrowRoundBack size={24} /> Back
+            </button>
+            {/* </Link> */}
           </div>
         )}
         {/* Body section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 md:gap-5 place-items-center">
-          {products.map((data) => (
+          {productsbyCat?.map((data) => (
             <div
               key={data?.id}
               data-aos="zoom-in"
@@ -101,6 +121,7 @@ NewItems.propTypes = {
     })
   ).isRequired,
   loading: PropTypes.bool,
+  selectedCategory: PropTypes.string,
 };
 
 export default NewItems;

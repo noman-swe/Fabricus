@@ -4,7 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
 import DarkMode from "./DarkMode";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import useNewProducts from "../../hooks/useNewProducts";
 
@@ -55,12 +55,15 @@ const clothesCat = [
 ];
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-const Navbar = ({ isLanding = false, cartCount }) => {
-  // const handleCarts = () => {
-  //   alert("carts");
-  // };
+const Navbar = ({ isLanding = false, cartCount, setSelectedCategory }) => {
   const [products, categories] = useNewProducts();
-  console.log("🚀 ~ Navbar ~ categories:", categories);
+  const navigate = useNavigate();
+
+  const handleSelectedCategory = (event, category) => {
+    event.preventDefault();
+    setSelectedCategory(category);
+    navigate(`/${category}`);
+  };
 
   return (
     <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 relative z-40">
@@ -154,13 +157,16 @@ const Navbar = ({ isLanding = false, cartCount }) => {
             </a>
             <div className="absolute z-[9999] hidden group-hover:block w-[200px] rounded-md bg-white p-2 text-black shadow-md">
               <ul>
-                {categories?.map((data, index) => (
-                  <li key={index}>
+                {categories?.map((category, index) => (
+                  <li
+                    key={index}
+                    onClick={(event) => handleSelectedCategory(event, category)}
+                  >
                     <a
-                      href={data}
-                      className="inline-block w-full rounded-md p-2 hover:bg-primary/20 capitalize "
+                      href={category}
+                      className="inline-block w-full rounded-md p-2 hover:bg-primary/20 capitalize"
                     >
-                      {data}
+                      {category}
                     </a>
                   </li>
                 ))}
@@ -174,6 +180,7 @@ const Navbar = ({ isLanding = false, cartCount }) => {
 };
 Navbar.propTypes = {
   cartCount: PropTypes.number,
+  setSelectedCategory: PropTypes.func,
   // categories: PropTypes.arrayOf(PropTypes.string),
 };
 
